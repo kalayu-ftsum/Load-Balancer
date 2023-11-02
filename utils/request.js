@@ -1,6 +1,6 @@
 const axios=require('axios');
 
-module.exports=async(server,req)=>{
+const makeRequest=async(server,req)=>{
     const { method, url, headers, body } = req;
     return await axios({
         url: `${server}${url}`,
@@ -8,4 +8,13 @@ module.exports=async(server,req)=>{
         headers: headers,
         data: body
     });
+}
+
+module.exports={
+    makeRequest,
+    get:axios.get,
+    post:axios.post,
+    put:axios.put,
+    delete:axios.delete,
+    head:axios.head
 }
