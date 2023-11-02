@@ -1,14 +1,14 @@
 const request=require('./request');
 const {roundRobin}=require('./algorithms');
-const config=require('../config/config');
 
 const roundRobinHandler = () =>{
     let current = 0;
     return async (req, res)=>{
-        const {server,currentIndex} = roundRobin(config.servers,current);
+        let healthyServers=global.servers.filter(server=>server.isHealthy).values()
+        const {server,currentIndex} = roundRobin(healthyServers,current);
         current=currentIndex;
         try{
-            const response = await request(server,req)
+            const response = await request.makeRequest(server,req)
             res.send(response.data);
         }
         catch(err){
@@ -17,7 +17,25 @@ const roundRobinHandler = () =>{
    } 
 }
 
+const performHealthCheck =async()=> {
+    console.log('check health')
+    for (const server of global.servers) {
+      try {
+        const response = await request.get(`${server.url}/health`);
+        
+        if (response.status >= 200 && response.status < 300) {
+          server.isHealthy = true;
+        } else {
+          server.isHealthy = false;
+        }
+      } catch (error) {
+        server.isHealthy = false;
+      }
+    }
+  };
+
 
 module.exports={
-    roundRobinHandler
+    roundRobinHandler,
+    performHealthCheck
 }
