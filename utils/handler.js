@@ -4,7 +4,8 @@ const {roundRobin}=require('./algorithms');
 const roundRobinHandler = () =>{
     let current = 0;
     return async (req, res)=>{
-        let healthyServers=global.servers.filter(server=>server.isHealthy).values()
+        let healthyServers=global.servers.filter(server=>server.isHealthy).map(server=>server.url)
+        console.log(healthyServers)
         const {server,currentIndex} = roundRobin(healthyServers,current);
         current=currentIndex;
         try{
@@ -16,6 +17,7 @@ const roundRobinHandler = () =>{
         }
    } 
 }
+
 
 const performHealthCheck =async()=> {
     console.log('check health')
