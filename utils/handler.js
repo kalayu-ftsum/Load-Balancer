@@ -2,13 +2,13 @@ const request=require('./request');
 const {roundRobin,weightedRoundRobin}=require('./algorithms');
 
 const getHealthyServers=()=>{
-    let healthyServers=global.servers.filter(server=>server.isHealthy).map(server=>server.url)
+    let healthyServers=global.servers.filter(server=>server.isHealthy);
     return healthyServers
 }
 const roundRobinHandler = () =>{
     let current = 0;
     return async (req, res)=>{
-       const {server,currentIndex} = roundRobin(getHealthyServers(),current);
+       const {server,currentIndex} = roundRobin(getHealthyServers().map(server=>server.url),current);
         current=currentIndex;
         try{
             const response = await request.makeRequest(server,req)

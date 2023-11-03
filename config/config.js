@@ -8,7 +8,7 @@ module.exports = {
         },
         {
             url: "http://localhost:3002",
-            weight: 1,
+            weight: 2,
             currentWeight:0,
             isHealthy: true
         },
