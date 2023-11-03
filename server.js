@@ -21,7 +21,7 @@ global.servers=config.servers
 // Perform initial health check
 performHealthCheck();
 
-// Schedule periodic health checks (every 5 minutes in this example)
+// Schedule periodic health checks (every 10 seconds in this example)
 const healthCheckInterval = setInterval(performHealthCheck, 10 * 1000);
 
 app.use("/weightedRoundRobin",weightedRoundRobinHandler);
