@@ -1,6 +1,16 @@
-module.exports={
+module.exports = {
     servers: [
-        "http://localhost:3001",
-        "http://localhost:3002"
+        {
+            url: "http://localhost:3001",
+            weight: 1,
+            currentWeight:0,
+            isHealthy: true
+        },
+        {
+            url: "http://localhost:3002",
+            weight: 1,
+            currentWeight:0,
+            isHealthy: true
+        },
     ]
 }
