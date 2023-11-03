@@ -23,14 +23,13 @@ const roundRobinHandler = () =>{
 const weightedRoundRobinHandler= async (req, res)=>{
      const server = weightedRoundRobin(getHealthyServers());
       try{
-          const response = await request.makeRequest(server,req)
+          const response = await request.makeRequest(server.url,req)
           res.send(response.data);
       }
       catch(err){
           res.status(500).send("Server error!") ;
       }
  } 
-
 
 
 const performHealthCheck =async()=> {
