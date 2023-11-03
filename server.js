@@ -1,7 +1,7 @@
 const express=require('express');
 
 const config=require('./config/config');
-const { roundRobinHandler,performHealthCheck, weightedRoundRobinHandler }=require('./utils/handler');
+const { roundRobinHandler,performHealthCheck, weightedRoundRobinHandler, ipHash }=require('./utils/handler');
 
 const app=express();
 const PORT=3000;
@@ -24,6 +24,7 @@ performHealthCheck();
 // Schedule periodic health checks (every 10 seconds in this example)
 const healthCheckInterval = setInterval(performHealthCheck, 10 * 1000);
 
+app.use('/iphash',ipHash);
 app.use("/weightedRoundRobin",weightedRoundRobinHandler);
 app.use("*",roundRobinHandler());
 

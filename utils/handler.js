@@ -31,6 +31,34 @@ const weightedRoundRobinHandler= async (req, res)=>{
       }
  } 
 
+ const hashCode=(ip)=>{
+  let hash = 0;
+  if (ip.length === 0) return hash;
+
+  for (let i = 0; i < ip.length; i++) {
+    const char = ip.charCodeAt(i);
+    hash = (hash << 5) - hash + char;
+    hash = hash & hash; // Convert to 32bit integer
+  }
+
+  return hash;
+}
+const ipHash= async (req, res)=>{
+  const clientIp = req.ip;
+
+  const hash = hashCode(clientIp);
+  const servers=getHealthyServers()
+  const index = hash % servers.length;
+  const server=servers[index]
+
+   try{
+       const response = await request.makeRequest(server.url,req)
+       res.send(response.data);
+   }
+   catch(err){
+       res.status(500).send("Server error!") ;
+   }
+} 
 
 const performHealthCheck =async()=> {
     console.log('check health')
@@ -52,5 +80,6 @@ const performHealthCheck =async()=> {
 module.exports={
     roundRobinHandler,
     performHealthCheck,
-    weightedRoundRobinHandler
+    weightedRoundRobinHandler,
+    ipHash
 }
