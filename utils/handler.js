@@ -64,6 +64,10 @@ const performHealthCheck =async()=> {
     for (const server of global.servers) {
       try {
         const response = await request.get(`${server.url}/health`);
+        if(response.data.loadAvg > 60){
+          server.isHealthy=false;
+          continue;
+        }
         
         if (response.status >= 200 && response.status < 300) {
           server.isHealthy = true;
