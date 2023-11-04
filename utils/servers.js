@@ -11,10 +11,10 @@ server2.use((req,res,next)=>res.send('Server 2'));
 const healthCheck=(serverName)=>(req, res)=>{
     try {
       //checks database connectivity, server health, and other resource.
-      res.status(200).send(`${serverName} is health`);
+      res.status(200).send(`${serverName} is healthy`);
     } catch (err) {
       console.error(`${serverName}check fialed : ${err}`);
-      res.status(500).send(`${serverName} is health`);
+      res.status(500).send(`${serverName} is healthy`);
     }
   }
   

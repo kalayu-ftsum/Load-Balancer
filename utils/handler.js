@@ -61,7 +61,6 @@ const ipHash= async (req, res)=>{
 } 
 
 const performHealthCheck =async()=> {
-    console.log('check health')
     for (const server of global.servers) {
       try {
         const response = await request.get(`${server.url}/health`);
