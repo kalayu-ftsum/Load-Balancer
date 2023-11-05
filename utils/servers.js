@@ -28,4 +28,4 @@ server1.get('/',(req,res,next)=>res.send('Server 1'));
 server2.get('/',(req,res,next)=>res.send('Server 2'));
 
 server1.listen(PORT1,()=>console.log(`Server 1 is running on port ${PORT1}`));
-// server2.listen(PORT2,()=>console.log(`Server 1 is running on port ${PORT2}`));
+server2.listen(PORT2,()=>console.log(`Server 1 is running on port ${PORT2}`));
