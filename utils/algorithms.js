@@ -26,7 +26,23 @@ const weightedRoundRobin= (servers) => {
     return selectedServer;
   };
 
+  const weightedResponseTime = (servers) => {
+    let selectedServer = servers[0];
+    let lowestWeightedResponseTime = Infinity;
+  
+    for (const server of servers) {
+        const weightedResponseTime = server.responseTime * server.weight;
+  
+        if (weightedResponseTime < lowestWeightedResponseTime) {
+          lowestWeightedResponseTime = weightedResponseTime;
+          selectedServer = server;
+        }
+    }
+  
+    return selectedServer;
+  };
 module.exports={
     roundRobin,
-    weightedRoundRobin
+    weightedRoundRobin,
+    weightedResponseTime
 }
