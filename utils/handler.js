@@ -1,5 +1,5 @@
 const request=require('./request');
-const {roundRobin,weightedRoundRobin,weightedResponseTime}=require('./algorithms');
+const {roundRobin,weightedRoundRobin,weightedResponseTime,weightedLeastConnections}=require('./algorithms');
 
 const getHealthyServers=()=>{
     let healthyServers=global.servers.filter(server=>server.isHealthy);
@@ -63,6 +63,7 @@ const ipHash= async (req, res)=>{
 const weightedResponseTimeHandler=async (req, res)=>{
   const server = weightedResponseTime(getHealthyServers());
    try{
+       if(!server) return  res.status(500).send("Server error!") ;
        const response = await request.makeRequest(server.url,req);
        res.send(response.data);
    }
@@ -71,7 +72,17 @@ const weightedResponseTimeHandler=async (req, res)=>{
    }
 } 
 
-
+const weightedLeastConnectionsHandler=async (req, res)=>{
+  const server = weightedLeastConnections(getHealthyServers());
+   try{
+       if(!server) return  res.status(500).send("Server error!") ;
+       const response = await request.makeRequest(server.url,req);
+       res.send(response.data);
+   }
+   catch(err){
+       res.status(500).send("Server error!") ;
+   }
+} 
 const performHealthCheck =async()=> {
     for (const server of global.servers) {
       try {
@@ -103,5 +114,6 @@ module.exports={
     performHealthCheck,
     weightedRoundRobinHandler,
     ipHash,
-    weightedResponseTimeHandler
+    weightedResponseTimeHandler,
+    weightedLeastConnectionsHandler
 }

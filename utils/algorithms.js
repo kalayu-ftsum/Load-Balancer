@@ -41,8 +41,26 @@ const weightedRoundRobin= (servers) => {
   
     return selectedServer;
   };
+
+  const weightedLeastConnections = (servers) => {
+    if(!servers) return null;
+    let selectedServer = servers[0];
+    let lowestWeightedConnections = Infinity;
+  
+    for (const server of servers) {
+        const weightedConnections = server.connections / server.weight;
+  
+        if (weightedConnections < lowestWeightedConnections) {
+          lowestWeightedConnections = weightedConnections;
+          selectedServer = server;
+        }
+    }
+    return selectedServer;
+  };
+  
 module.exports={
     roundRobin,
     weightedRoundRobin,
-    weightedResponseTime
+    weightedResponseTime,
+    weightedLeastConnections
 }
