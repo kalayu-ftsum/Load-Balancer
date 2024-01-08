@@ -4,7 +4,7 @@ const config=require('./config/config');
 const { roundRobinHandler,performHealthCheck, weightedRoundRobinHandler, ipHash, weightedResponseTimeHandler, weightedLeastConnectionsHandler }=require('./utils/handler');
 
 const app=express();
-const PORT=3000;
+const PORT= process.env.PORT || 3000;
 
 /* 
 
